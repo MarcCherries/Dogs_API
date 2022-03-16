@@ -21,8 +21,15 @@ def dogs_list(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def dog_detail(request, pk):
-    dog = get_object_or_404(Dog, pk=pk)
-    serializer = DogSerializer(dog)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        dog = get_object_or_404(Dog, pk=pk)
+        serializer = DogSerializer(dog)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        dog = get_object_or_404(Dog, pk=pk)
+        serializer = DogSerializer(dog, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
