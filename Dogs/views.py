@@ -1,9 +1,11 @@
 from telnetlib import DO
+from webbrowser import get
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import DogSerializer 
 from .models import Dog 
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -17,4 +19,10 @@ def dogs_list(request):
         serializer = DogSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+def dog_detail(request, pk):
+    dog = get_object_or_404(Dog, pk=pk)
+    serializer = DogSerializer(dog)
+    return Response(serializer.data)
