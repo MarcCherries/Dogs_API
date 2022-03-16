@@ -29,6 +29,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+Rest_Framework = {
+    'COERCE_DECIMAL_TO_STRING':False
+}
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
